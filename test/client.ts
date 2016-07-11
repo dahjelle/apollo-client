@@ -822,6 +822,7 @@ describe('client', () => {
     const query = gql`
       query people {
         allPeople(first: 1) {
+          id
           people {
             id
             name
@@ -832,6 +833,7 @@ describe('client', () => {
 
     const data = {
       allPeople: {
+        id: '0',
         people: [
           {
             id: '1',

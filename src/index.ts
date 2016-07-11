@@ -167,6 +167,20 @@ export default class ApolloClient {
     ssrForceFetchDelay?: number
     mutationBehaviorReducers?: MutationBehaviorReducerMap,
   } = {}) {
+    if (dataIdFromObject) {
+      const _dataIdFromObject = dataIdFromObject;
+      dataIdFromObject = function(obj) {
+        const result = _dataIdFromObject(obj);
+        if (!result) {
+          console.warn(`Warning: dataIdFromObject returned a falsy value (${result}) for object
+${JSON.stringify(obj)}. Please check your query and dataIdFromObject to make sure that
+dataIdFromObject returns the intended value! Falsy ids lead to Apollo using a default value as the
+cache key instead.`);
+        }
+        return result;
+      };
+    }
+
     this.reduxRootKey = reduxRootKey ? reduxRootKey : 'apollo';
     this.initialState = initialState ? initialState : {};
     this.networkInterface = networkInterface ? networkInterface :
